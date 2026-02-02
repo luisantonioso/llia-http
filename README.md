@@ -1,26 +1,26 @@
 # @llia/http
 
-Biblioteca HTTP client simples e type-safe para fazer requisições HTTP com TypeScript.
+Simple and type-safe HTTP client library for making HTTP requests with TypeScript.
 
-## Instalação
+## Installation
 
-Copie os arquivos da pasta `src` para o seu projeto e importe diretamente:
+Copy the files from the `src` folder to your project and import directly:
 
-### Estrutura de Arquivos
+### File Structure
 
-A pasta `src` contém:
-- `index.ts` - Arquivo principal com a classe `HttpClient`
-- `types.ts` - Definições de tipos TypeScript
-- `utils.ts` - Funções utilitárias
+The `src` folder contains:
+- `index.ts` - Main file with the `HttpClient` class
+- `types.ts` - TypeScript type definitions
+- `utils.ts` - Utility functions
 
-## Uso Básico
+## Basic Usage
 
 ```typescript
-import { HttpClient } from './caminho/para/src/index.ts';
-// ou
+import { HttpClient } from './path/to/src/index.ts';
+// or
 import { HttpClient } from './src/index.ts';
 
-// Criar instância do cliente
+// Create client instance
 const client = new HttpClient({
   url: 'https://api.example.com',
 });
@@ -29,32 +29,32 @@ const client = new HttpClient({
 const result = await client.get<{ id: number; name: string }>('/users/1');
 
 if (result.error) {
-  console.error('Erro:', result.error.message);
+  console.error('Error:', result.error.message);
 } else {
-  console.log('Dados:', result.data);
+  console.log('Data:', result.data);
 }
 ```
 
-## Configuração
+## Configuration
 
-### URL Base
+### Base URL
 
-A URL base é opcional. Se não fornecida, você pode usar endpoints completos:
+The base URL is optional. If not provided, you can use full endpoints:
 
 ```typescript
-// Com URL base
+// With base URL
 const client = new HttpClient({
   url: 'https://api.example.com',
 });
 
-// Sem URL base (use endpoints completos)
+// Without base URL (use full endpoints)
 const client = new HttpClient();
 const result = await client.get('https://api.example.com/users/1');
 ```
 
-### Headers Globais
+### Global Headers
 
-Headers definidos no construtor são enviados em todas as requisições. O header `Content-Type: application/json` é adicionado automaticamente por padrão:
+Headers defined in the constructor are sent in all requests. The `Content-Type: application/json` header is automatically added by default:
 
 ```typescript
 const client = new HttpClient({
@@ -66,14 +66,14 @@ const client = new HttpClient({
 });
 ```
 
-## Métodos HTTP
+## HTTP Methods
 
 ### GET
 
 ```typescript
 const result = await client.get<User>('/users/1');
 
-// Com headers customizados
+// With custom headers
 const result = await client.get<User>('/users/1', {
   headers: {
     'X-Custom-Header': 'value',
@@ -89,20 +89,20 @@ const result = await client.post<CreatedUser>('/users', {
   email: 'john@example.com',
 });
 
-// Sem body
+// Without body
 const result = await client.post<Response>('/endpoint');
 ```
 
 ### PUT
 
-O body é obrigatório para requisições PUT:
+The body is required for PUT requests:
 
 ```typescript
 const result = await client.put<UpdatedUser>('/users/1', {
   name: 'Jane Doe',
 });
 
-// Com headers customizados
+// With custom headers
 const result = await client.put<UpdatedUser>('/users/1', {
   name: 'Jane Doe',
 }, {
@@ -114,14 +114,14 @@ const result = await client.put<UpdatedUser>('/users/1', {
 
 ### PATCH
 
-O body é obrigatório para requisições PATCH:
+The body is required for PATCH requests:
 
 ```typescript
 const result = await client.patch<UpdatedUser>('/users/1', {
   name: 'Jane Doe',
 });
 
-// Com headers customizados
+// With custom headers
 const result = await client.patch<UpdatedUser>('/users/1', {
   name: 'Jane Doe',
 }, {
@@ -136,15 +136,15 @@ const result = await client.patch<UpdatedUser>('/users/1', {
 ```typescript
 const result = await client.delete<void>('/users/1');
 
-// Com body
+// With body
 const result = await client.delete<Response>('/users/1', {
   reason: 'Deleted by user',
 });
 ```
 
-## Tratamento de Respostas
+## Response Handling
 
-Todas as requisições retornam um objeto `Response<T>` com a seguinte estrutura:
+All requests return a `Response<T>` object with the following structure:
 
 ```typescript
 type Response<T> = 
@@ -152,7 +152,7 @@ type Response<T> =
   | { data: null; error: ErrorResponse };
 ```
 
-### Exemplo de Sucesso
+### Success Example
 
 ```typescript
 const result = await client.get<User>('/users/1');
@@ -166,41 +166,41 @@ if (result.error === null) {
 }
 ```
 
-### Exemplo de Erro
+### Error Example
 
 ```typescript
 const result = await client.get<User>('/users/999');
 
 if (result.error) {
-  console.error('Mensagem:', result.error.message);
+  console.error('Message:', result.error.message);
   console.error('Status:', result.error.statusCode);
-  console.error('Tipo:', result.error.name);
+  console.error('Type:', result.error.name);
 } else {
   console.log(result.data);
 }
 ```
 
-### Erros de Rede
+### Network Errors
 
-Quando a requisição não pode ser resolvida (erro de rede, CORS, etc.), o `statusCode` será `null`:
+When the request cannot be resolved (network error, CORS, etc.), the `statusCode` will be `null`:
 
 ```typescript
 const result = await client.get<User>('/users/1');
 
 if (result.error) {
   if (result.error.statusCode === null) {
-    // Erro de rede - requisição não pôde ser resolvida
-    console.error('Erro de rede:', result.error.message);
+    // Network error - request could not be resolved
+    console.error('Network error:', result.error.message);
   } else {
-    // Erro HTTP - requisição foi feita mas retornou erro
-    console.error('Erro HTTP:', result.error.statusCode, result.error.message);
+    // HTTP error - request was made but returned an error
+    console.error('HTTP error:', result.error.statusCode, result.error.message);
   }
 }
 ```
 
-## Headers por Requisição
+## Headers per Request
 
-Headers passados em uma requisição específica sobrescrevem os headers globais:
+Headers passed in a specific request override the global headers:
 
 ```typescript
 const client = new HttpClient({
@@ -210,7 +210,7 @@ const client = new HttpClient({
   },
 });
 
-// Esta requisição usará 'Bearer custom-token' ao invés de 'Bearer default-token'
+// This request will use 'Bearer custom-token' instead of 'Bearer default-token'
 const result = await client.get('/users', {
   headers: {
     Authorization: 'Bearer custom-token',
@@ -218,41 +218,41 @@ const result = await client.get('/users', {
 });
 ```
 
-## Tipos
+## Types
 
 ```typescript
-import type { Response, ErrorResponse, ClientConfig, RequestConfig } from './caminho/para/src/index.ts';
-// ou
+import type { Response, ErrorResponse, ClientConfig, RequestConfig } from './path/to/src/index.ts';
+// or
 import type { Response, ErrorResponse, ClientConfig, RequestConfig } from './src/index.ts';
 
-// Response<T> - Tipo de retorno de todas as requisições
+// Response<T> - Return type for all requests
 type Response<T> = 
   | { data: T; error: null }
   | { data: null; error: ErrorResponse };
 
-// ErrorResponse - Estrutura de erro
+// ErrorResponse - Error structure
 interface ErrorResponse {
   message: string;
   statusCode: number | null;
   name: string;
 }
 
-// ClientConfig - Configuração do construtor
+// ClientConfig - Constructor configuration
 interface ClientConfig {
-  url?: string; // URL base (opcional)
-  headers?: HeadersInit; // Headers globais (Headers, Record, ou Array)
+  url?: string; // Base URL (optional)
+  headers?: HeadersInit; // Global headers (Headers, Record, or Array)
 }
 
-// RequestConfig - Configuração por requisição
+// RequestConfig - Per-request configuration
 interface RequestConfig {
-  headers?: HeadersInit; // Headers específicos da requisição
+  headers?: HeadersInit; // Request-specific headers
 }
 ```
 
 ## Scripts
 
 ```bash
-# Executar testes
+# Run tests
 bun test
 
 # Build
@@ -261,6 +261,6 @@ bun run build
 # Lint
 bun run lint
 
-# Lint e corrigir
+# Lint and fix
 bun run lint:fix
 ```
