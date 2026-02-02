@@ -4,20 +4,21 @@ Biblioteca HTTP client simples e type-safe para fazer requisições HTTP com Typ
 
 ## Instalação
 
-```bash
-bun install @llia/http
-```
+Copie os arquivos da pasta `src` para o seu projeto e importe diretamente:
 
-ou
+### Estrutura de Arquivos
 
-```bash
-npm install @llia/http
-```
+A pasta `src` contém:
+- `index.ts` - Arquivo principal com a classe `HttpClient`
+- `types.ts` - Definições de tipos TypeScript
+- `utils.ts` - Funções utilitárias
 
 ## Uso Básico
 
 ```typescript
-import { HttpClient } from '@llia/http';
+import { HttpClient } from './caminho/para/src/index.ts';
+// ou
+import { HttpClient } from './src/index.ts';
 
 // Criar instância do cliente
 const client = new HttpClient({
@@ -220,7 +221,9 @@ const result = await client.get('/users', {
 ## Tipos
 
 ```typescript
-import type { Response, ErrorResponse, ClientConfig, RequestConfig } from '@llia/http';
+import type { Response, ErrorResponse, ClientConfig, RequestConfig } from './caminho/para/src/index.ts';
+// ou
+import type { Response, ErrorResponse, ClientConfig, RequestConfig } from './src/index.ts';
 
 // Response<T> - Tipo de retorno de todas as requisições
 type Response<T> = 
