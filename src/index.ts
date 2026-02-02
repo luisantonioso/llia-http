@@ -57,7 +57,6 @@ async function executeRequest<T>(
       return {
         data: null,
         error,
-        headers: extractHeadersDict(response),
       };
     }
 
@@ -65,7 +64,6 @@ async function executeRequest<T>(
     return {
       data,
       error: null,
-      headers: extractHeadersDict(response),
     };
   } catch {
     return {
@@ -75,7 +73,6 @@ async function executeRequest<T>(
         statusCode: null,
         message: 'Unable to fetch data. The request could not be resolved.',
       },
-      headers: null,
     };
   }
 }

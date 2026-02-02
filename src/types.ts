@@ -7,9 +7,7 @@ export interface RequestConfig {
 export type Response<T> = (
   | { data: T; error: null }
   | { data: null; error: ErrorResponse }
-) & {
-  headers: Record<string, string> | null;
-};
+)
 
 export interface ErrorResponse {
   message: string;
